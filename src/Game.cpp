@@ -12,13 +12,33 @@ Game::~Game() {}
 
 bool Game::init()
 {
+  grid.init();
   return true;
 }
 
 // UPDATE FUNCTION
 void Game::update(float dt)
 {
-  
+  switch (game_state)
+  {
+    case MENU:
+    {
+    
+    
+    }
+      break;
+    case GAME:
+        {
+     
+     
+    }
+        break;
+    case PAUSE:
+    {
+    
+    }
+    break;
+  }
  
   
 }

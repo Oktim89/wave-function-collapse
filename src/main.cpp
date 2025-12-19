@@ -1,6 +1,5 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
-#include "Bird.h"
 #include "Game.h"
 
 

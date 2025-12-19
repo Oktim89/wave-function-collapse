@@ -2,9 +2,14 @@
 #define WHACKAMOLESFML_GAME_H
 
 #include <SFML/Graphics.hpp>
+#include "Grid.h"
 
-
-
+enum GAME_STATE
+{
+  MENU,
+  GAME,
+  PAUSE
+};
   class Game
 {
  public:
@@ -24,8 +29,8 @@
   void spawn();
 
 
-
-  
+  GAME_STATE game_state = MENU;
+  Grid grid;
   
   
   
