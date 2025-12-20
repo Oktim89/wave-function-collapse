@@ -132,7 +132,7 @@ void Grid::printGrid() {
 
 int (*Grid::getAllGrid())[60]
 {
-  int copy[60][60]; // separate copy
+  int copy[60][60];
 
   for (int i = 0; i < X; i++)
     for (int j = 0; j < Y; j++)

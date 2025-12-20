@@ -3,7 +3,7 @@
 
 #include <SFML/Graphics.hpp>
 #include "Grid.h"
-#include "Enemy.h"
+#include "EnemyCode/Enemy.h"
 
 enum GAME_STATE
 {
