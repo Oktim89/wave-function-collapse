@@ -1,11 +1,12 @@
 #pragma once
-#include "Enemy.h"
+#include <SFML/Graphics.hpp>
+#include <iostream>
 // Flying enemy class
 // Inherits from Enemy class and contains specific attributes and methods for flying enemies
-class EnemyFlying : public Enemy
+class EnemyFlying
 {
 	public:
-		EnemyFlying(int health, int damage);
+		EnemyFlying();
 		~EnemyFlying();
 		void Attack();
 		void Fly();

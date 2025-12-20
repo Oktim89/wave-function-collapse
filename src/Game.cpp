@@ -16,6 +16,7 @@ bool Game::init()
   grid.generateDungeon();
   spawnEnemy(5);
   grid.printGrid();
+  enemy.checkIfAttackPossible(grid.getAllGrid());
   return true;
 }
 

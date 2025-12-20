@@ -1,13 +1,16 @@
 #pragma once
-#include "Enemy.h"
+#include <SFML/Graphics.hpp>
+#include < iostream>
 // Ground-based enemy class
 // Inherits from Enemy class and contains specific attributes and methods for ground enemies
-class EnemyGround : public Enemy
+class EnemyGround
 {
 	public:
-		EnemyGround(int health, int damage);
+		EnemyGround();
 		~EnemyGround();
-		void Attack();
+		void Attack(int enemy);
         void Move();
 	private:
+	 int health;
+     int damage;
 };

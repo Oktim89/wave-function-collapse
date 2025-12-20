@@ -1,24 +1,34 @@
 #pragma once
 #include <SFML/Graphics.hpp>
+#include <iostream>
+#include "EnemyGround.h"
+#include "EnemyFlying.h"
 
-// Parent class for all enemies
-// Contains common attributes and methods for enemies
-// Indivual enemy types will inherit from this class and implement unique behaviors
+// Enemy class
+// Container Class for different enemy types
+// Allows Enemy logic to be handled in one place,
+// while specific enemy behaviors are delegated to their respective classes
 class Enemy
 {
 	public:
-	Enemy(int health, int damage);
+	Enemy();
 	~Enemy();
-	void attack();
+	void attack(int enemy);
+    void checkIfAttackPossible(int (*matrix)[60]);
 	void takeDamage(int amount); 
-	int getHealth();
-    int getDamage();
     sf::Vector3i spawn(int (*matrix)[60]);
 
 	private:
-	int health;
-    int damage;
+	//int health;
+    //int damage;
     int type;
     bool spawned = false;
+    enum EnemyTypes
+    {
+      SLIME = -1
+    };
+
+	EnemyGround enemyGround;
+    EnemyFlying enemyFlying;
 
 };

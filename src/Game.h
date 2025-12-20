@@ -32,7 +32,7 @@ enum GAME_STATE
 
   GAME_STATE game_state = MENU;
   Grid grid;
-  Enemy enemy{ 100, 10 };
+  Enemy enemy{};
   
   
   
