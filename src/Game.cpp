@@ -14,6 +14,7 @@ bool Game::init()
 {
   grid.init();
   grid.generateDungeon();
+  enemy.spawn(grid.getSpaenableTile());
   return true;
 }
 

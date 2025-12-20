@@ -15,6 +15,9 @@ class Grid
   void connectRooms(sf::FloatRect room1, sf::FloatRect room2 , int hallway_width=2);
   void generateDungeon();
   void printGrid();
+  int getGrid(int x, int y);
+  void setGrid(int x, int y, int value);
+  int getSpaenableTile();
  int MAXROOMS = 50;
   int roomCount = 0;
  int MAX_ROOM_SIZE = 20;

@@ -130,3 +130,26 @@ void Grid::printGrid() {
   }
 }
 
+int Grid::getGrid(int x,int y) 
+{
+  return grid[x][y];
+}
+
+void Grid::setGrid(int x, int y, int value)
+{
+  grid[x][y] = value;
+}
+
+int Grid::getSpaenableTile() 
+{
+  int x = 0;
+  int y = 0;
+  do
+  {
+    x = rand() % X;
+    y = rand() % Y;
+  } 
+  while (grid[x][y] != 0);
+
+  return x, y;
+}
