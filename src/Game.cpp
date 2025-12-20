@@ -13,6 +13,7 @@ Game::~Game() {}
 bool Game::init()
 {
   grid.init();
+  grid.generateDungeon();
   return true;
 }
 
