@@ -3,7 +3,7 @@
 #include <algorithm>
 
 Grid::Grid() {
-  srand(time(NULL));
+  srand(static_cast<unsigned>(time(NULL)));
 }
 Grid::~Grid() {}
 bool Grid::init()
@@ -14,7 +14,7 @@ bool Grid::init()
   {
     for (int j = 0; j < Y - 1; j++)
     {
-      grid[i][j] = 1;
+      grid[i][j] = RoomIndex::Wall;
     
     }
     std::cout << std::endl;
@@ -26,96 +26,171 @@ bool Grid::init()
 
 
 
-sf::FloatRect Grid::generateRoom()
+sf::IntRect Grid::generateRoom(RoomType type)
 {
-  int roomWidth = rand() % (MAX_ROOM_SIZE - MIN_ROOM_SIZE + 1) + MIN_ROOM_SIZE;
-  int roomHeight = rand() % (MAX_ROOM_SIZE - MIN_ROOM_SIZE + 1) + MIN_ROOM_SIZE;
-  int x_gridPos = rand() % (int(X) - roomWidth - 1) + 1;
-  int y_gridPos = rand() % (int(Y) - roomHeight - 1) + 1;
-  return sf::FloatRect(x_gridPos, y_gridPos, roomWidth, roomHeight);
+  int roomWidth = MIN_ROOM_SIZE + rand() % (MAX_ROOM_SIZE - MIN_ROOM_SIZE + 1) +
+                  sizeBonus(type);
+  int roomHeight = MIN_ROOM_SIZE +
+                   rand() % (MAX_ROOM_SIZE - MIN_ROOM_SIZE + 1) +
+                   sizeBonus(type);
+
+  int x_gridPos = rand() % (X - roomWidth - 2) + 1;
+  int y_gridPos = rand() % (Y - roomHeight - 2) + 1;
+  return sf::IntRect(x_gridPos, y_gridPos, roomWidth, roomHeight);
 }
 
-bool Grid::placeRoom(sf::FloatRect newRoom)
+int Grid::sizeBonus(RoomType type)
 {
-
-    for (int i = newRoom.left - 1; i < newRoom.left + newRoom.width + 1; i++)
+  switch (type)
   {
-    for (int j = newRoom.top - 1; j < newRoom.top + newRoom.height + 1; j++)
+    
+    
+    case RoomType::Treasure:
+      return 1;
+      break;
+    case RoomType::Shop:
+      return 2;
+      break;
+    case RoomType::Boss:
+      return 5;
+    default:
+      break;
+  }
+}
+
+bool Grid::placeRoom(sf::IntRect& newRoom)
+{
+  for (int x = newRoom.left - 1; x <= newRoom.left + newRoom.width; x++)
+  {
+    for (int y = newRoom.top - 1; y <= newRoom.top + newRoom.height; y++)
     {
-      if (grid[i][j] == 0)
+      if (!inBounds(x, y) || grid[x][y] != RoomIndex::Wall)
       {
         return false;
       }
     }
   }
-    for (int i = newRoom.left; i < newRoom.left + newRoom.width; i++)
-  {
-    for (int j = newRoom.top; j < newRoom.top + newRoom.height; j++)
-    {
-      grid[i][j] = 0;
-    }
-  }
   return true;
 }
 
-void Grid::connectRooms(
-  sf::FloatRect room1, sf::FloatRect room2, int hallway_width)
-{
-  // start from center of room1 to center of room2
-    int x1 = room1.left + room1.width / 2;
-  int y1 = room1.top + room1.height / 2;
-  int x2 = room2.left + room2.width / 2;
-  int y2 = room2.top + room2.height / 2;
-  if (rand() % 2 == 0)
+void Grid::writeRoom(Room& room) {
+  int tile = tileForRoom(room.type);
+  for (int i = room.rect.left; i < room.rect.left + room.rect.width; i++)
   {
-      //
-    for (int x = std::min(x1, x2); x <= std::max(x1, x2); x++)
+    for (int j = room.rect.top; j < room.rect.top + room.rect.height; j++)
     {
-      for (int w = -hallway_width / 2; w <= hallway_width / 2; w++)
-      {
-        grid[x][y1 + w] = 0;
-      }
-    }
-    for (int y = std::min(y1, y2); y <= std::max(y1, y2); y++)
-    {
-      for (int w = -hallway_width / 2; w <= hallway_width / 2; w++)
-      {
-        grid[x2 + w][y] = 0;
-      }
+      grid[i][j] = tile;
     }
   }
-  else
+  
+}
+
+void Grid::carveTile(int x, int y) {
+  if (inBounds(x, y))
   {
-    for (int y = std::min(y1, y2); y <= std::max(y1, y2); y++)
-    {
-      for (int w = -hallway_width / 2; w <= hallway_width / 2; w++)
-      {
-        grid[x1 + w][y] = 0;
-      }
-    }
-    for (int x = std::min(x1, x2); x <= std::max(x1, x2); x++)
-    {
-      for (int w = -hallway_width / 2; w <= hallway_width / 2; w++)
-      {
-        grid[x][y2 + w] = 0;
-      }
-    }
+    grid[x][y] = RoomIndex::Floor;
   }
 }
 
-void Grid::generateDungeon() {
-    for (int i = 0; i < MAXROOMS; i++) {
-        sf::FloatRect newRoom = generateRoom();
-        if (placeRoom(newRoom)) {
-            if (roomCount > 0) {
-                connectRooms(rooms[roomCount - 1], newRoom);
-            }
-            rooms.push_back(newRoom);
-            roomCount++;
-        }
-    }
-    printGrid();
+bool Grid::inBounds(int x, int y)
+{
+  return x >= 0 && x < X && y >= 0 && y < Y;
+}
 
+int Grid::tileForRoom(RoomType type)
+{
+
+    switch (type)
+  {
+      case RoomType::Start:
+      return RoomIndex::StartRoom;
+        break;
+      case RoomType::Combat:
+        return RoomIndex::CombatRoom;
+        break;
+      case RoomType::Treasure:
+        return RoomIndex::TreasureRoom;
+
+        break;
+      case RoomType::Shop:
+        return RoomIndex::ShopRoom;
+        break;
+      case RoomType::Boss:
+        return RoomIndex::BossRoom;
+        break;
+      default:
+        break;
+  }
+  return 0;
+}
+
+void Grid::connectRooms(const sf::IntRect& a, const sf::IntRect& b, int width)
+{
+  int ax = a.left + a.width / 2;
+  int ay = a.top + a.height / 2;
+  int bx = b.left + b.width / 2;
+  int by = b.top + b.height / 2;
+
+  bool horizontalFirst = rand() % 2;
+
+  if (horizontalFirst)
+  {
+    for (int x = std::min(ax, bx); x <= std::max(ax, bx); ++x)
+      for (int w = -width / 2; w <= width / 2; ++w)
+        carveTile(x, ay + w);
+
+    for (int y = std::min(ay, by); y <= std::max(ay, by); ++y)
+      for (int w = -width / 2; w <= width / 2; ++w)
+        carveTile(bx + w, y);
+  }
+  else
+  {
+    for (int y = std::min(ay, by); y <= std::max(ay, by); ++y)
+      for (int w = -width / 2; w <= width / 2; ++w)
+        carveTile(ax + w, y);
+
+    for (int x = std::min(ax, bx); x <= std::max(ax, bx); ++x)
+      for (int w = -width / 2; w <= width / 2; ++w)
+        carveTile(x, by + w);
+  }
+}
+
+
+void Grid::generateDungeon()
+{
+  rooms.clear();
+
+  for (RoomType type : roomPlan)
+  {
+    sf::IntRect rect;
+    do
+    {
+      rect = generateRoom(type);
+    } while (!placeRoom(rect));
+
+    Room room{ rect, type };
+
+    if (!rooms.empty())
+    {
+      if (type == RoomType::Treasure && rooms.size() > 2)
+      {
+        int branch = rand() % (rooms.size() - 1);
+        connectRooms(rooms[branch].rect, rect, 1);
+      }
+      else
+      {
+        connectRooms(rooms.back().rect, rect, 2);
+      }
+    }
+
+    writeRoom(room);
+    rooms.push_back(room);
+  }
+  for (Room& room : rooms)
+  {
+    fillRoom(room.type, room.rect);
+  }
+  printGrid();
 }
 
 void Grid::printGrid() {
@@ -129,4 +204,61 @@ void Grid::printGrid() {
     std::cout << std::endl;
   }
 }
+
+void Grid::fillRoom(RoomType type , sf::IntRect rect) {
+  switch (type)
+  {
+    case RoomType::Start:
+      for (int i = rect.left; i < rect.left + rect.width; i++)
+      {
+        for (int j = rect.top; j < rect.top + rect.height; j++)
+        {
+          grid[i][j] = RoomIndex::StartRoom;
+        }
+      }
+      break;
+    case RoomType::Combat:
+      for (int i = rect.left; i < rect.left + rect.width; i++)
+      {
+        for (int j = rect.top; j < rect.top + rect.height; j++)
+        {
+          grid[i][j] = RoomIndex::CombatRoom;
+        }
+      }
+      
+      break;
+    case RoomType::Treasure:
+      for (int i = rect.left; i < rect.left + rect.width; i++)
+      {
+        for (int j = rect.top; j < rect.top + rect.height; j++)
+        {
+          grid[i][j] = RoomIndex::TreasureRoom;
+        }
+      }
+     
+      break;
+    case RoomType::Shop:
+      for (int i = rect.left; i < rect.left + rect.width; i++)
+      {
+        for (int j = rect.top; j < rect.top + rect.height; j++)
+        {
+          grid[i][j] = RoomIndex::ShopRoom;
+        }
+      }
+      
+      break;
+    case RoomType::Boss:
+      for (int i = rect.left; i < rect.left + rect.width; i++)
+      {
+        for (int j = rect.top; j < rect.top + rect.height; j++)
+        {
+          grid[i][j] = RoomIndex::BossRoom;
+        }
+      }
+      break;
+  }
+  
+
+}
+
 
