@@ -1,4 +1,5 @@
 #pragma once
+#include <SFML/Graphics.hpp>
 
 // Parent class for all enemies
 // Contains common attributes and methods for enemies
@@ -12,11 +13,12 @@ class Enemy
 	void takeDamage(int amount); 
 	int getHealth();
     int getDamage();
-    int spawn();
+    sf::Vector3i spawn(int (*matrix)[60]);
 
 	private:
 	int health;
     int damage;
+    int type;
     bool spawned = false;
 
 };

@@ -93,14 +93,12 @@ void Game::spawnEnemy(int amount)
 {
   for (int i = 0; i < amount; i++)
   {
-    sf::Vector2i spawnTile = grid.getSpaenableTile();
-    int enemyTile          = enemy.spawn();
-    if (enemyTile != -1)
-    {
-      grid.setGrid(spawnTile.x, spawnTile.y, enemyTile);
-      std::cout << "Enemy spawned at (" << spawnTile.x << ", " << spawnTile.y
-                << ")" << std::endl;
-    }
+    int(*gridCopy)[60] = grid.getAllGrid();
+    sf::Vector3i result = enemy.spawn(gridCopy); 
+    std::cout << "Enemy spawned at X: " << result.y << " Y: " << result.z
+              << " With Type:" << result.x <<
+      std::endl;
+    grid.setGrid(result.y, result.z, result.x);
   }
 }
 

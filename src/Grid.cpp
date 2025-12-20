@@ -130,6 +130,17 @@ void Grid::printGrid() {
   }
 }
 
+int (*Grid::getAllGrid())[60]
+{
+  int copy[60][60]; // separate copy
+
+  for (int i = 0; i < X; i++)
+    for (int j = 0; j < Y; j++)
+      copy[i][j] = grid[i][j];
+
+  return copy;
+}
+
 int Grid::getGrid(int x,int y) 
 {
   return grid[x][y];
@@ -137,24 +148,5 @@ int Grid::getGrid(int x,int y)
 
 void Grid::setGrid(int x, int y, int value)
 {
-  // Allows a null value to skip setting
-  if (value != -1)
-  {
-    grid[x][y] = value;
-  }
-}
-
-
-sf::Vector2i Grid::getSpaenableTile() 
-{
-  int x = 0;
-  int y = 0;
-  do
-  {
-    x = rand() % X;
-    y = rand() % Y;
-  } 
-  while (grid[x][y] != 0);
-
-  return sf::Vector2i(x, y);
+  grid[x][y] = value;
 }

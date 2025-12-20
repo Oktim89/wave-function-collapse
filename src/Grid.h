@@ -16,6 +16,7 @@ class Grid
   void generateDungeon();
   void printGrid();
   int getGrid(int x, int y);
+  int (*getAllGrid())[60];
   void setGrid(int x, int y, int value);
   sf::Vector2i getSpaenableTile();
  int MAXROOMS = 50;
