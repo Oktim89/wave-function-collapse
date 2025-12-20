@@ -1,6 +1,7 @@
 #pragma once
 #include <SFML/Graphics.hpp>
 #include <vector>
+
 class Grid
 {
  public:
@@ -30,4 +31,12 @@ private:
   int X = 60;
   int Y = 60;
 
+  enum class RoomType
+  {
+    Start,
+    Combat,
+    Treasure,
+    Shop,
+    Boss
+  };
 };
