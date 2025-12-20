@@ -27,7 +27,7 @@ enum GAME_STATE
 
  private:
   bool collisionCheck(sf::Vector2i click, sf::Sprite& sprite);
-  void spawn();
+  void spawnEnemy(int amount);
 
 
   GAME_STATE game_state = MENU;

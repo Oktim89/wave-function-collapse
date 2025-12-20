@@ -17,7 +17,7 @@ class Grid
   void printGrid();
   int getGrid(int x, int y);
   void setGrid(int x, int y, int value);
-  int getSpaenableTile();
+  sf::Vector2i getSpaenableTile();
  int MAXROOMS = 50;
   int roomCount = 0;
  int MAX_ROOM_SIZE = 20;

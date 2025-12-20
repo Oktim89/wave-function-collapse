@@ -114,7 +114,7 @@ void Grid::generateDungeon() {
             roomCount++;
         }
     }
-    printGrid();
+    //printGrid();
 
 }
 
@@ -137,10 +137,15 @@ int Grid::getGrid(int x,int y)
 
 void Grid::setGrid(int x, int y, int value)
 {
-  grid[x][y] = value;
+  // Allows a null value to skip setting
+  if (value != -1)
+  {
+    grid[x][y] = value;
+  }
 }
 
-int Grid::getSpaenableTile() 
+
+sf::Vector2i Grid::getSpaenableTile() 
 {
   int x = 0;
   int y = 0;
@@ -151,5 +156,5 @@ int Grid::getSpaenableTile()
   } 
   while (grid[x][y] != 0);
 
-  return x, y;
+  return sf::Vector2i(x, y);
 }

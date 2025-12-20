@@ -14,7 +14,8 @@ bool Game::init()
 {
   grid.init();
   grid.generateDungeon();
-  enemy.spawn(grid.getSpaenableTile());
+  spawnEnemy(5);
+  grid.printGrid();
   return true;
 }
 
@@ -88,10 +89,19 @@ bool Game::collisionCheck(sf::Vector2i click, sf::Sprite& sprite)
   return false;
 }
 
-void Game::spawn()
+void Game::spawnEnemy(int amount)
 {
-  
- 
+  for (int i = 0; i < amount; i++)
+  {
+    sf::Vector2i spawnTile = grid.getSpaenableTile();
+    int enemyTile          = enemy.spawn();
+    if (enemyTile != -1)
+    {
+      grid.setGrid(spawnTile.x, spawnTile.y, enemyTile);
+      std::cout << "Enemy spawned at (" << spawnTile.x << ", " << spawnTile.y
+                << ")" << std::endl;
+    }
+  }
 }
 
 

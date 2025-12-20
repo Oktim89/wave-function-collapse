@@ -12,7 +12,7 @@ class Enemy
 	void takeDamage(int amount); 
 	int getHealth();
     int getDamage();
-    int spawn(int tile);
+    int spawn();
 
 	private:
 	int health;

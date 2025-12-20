@@ -17,19 +17,15 @@ void Enemy::attack()
 	std::cout << "Enemy attacks for " << damage << " damage!" << std::endl;
 }
 
-int Enemy::spawn(int tile) 
+int Enemy::spawn() 
 {
-  if (!spawned)
-  {
-    if (tile == 0)
-    {
-      spawned = true;
-      std::cout << "Enemy spawned on tile " << tile << std::endl;
-      return 3;
-	}
-    return -1;
-  }
-  return -1;
+  //if (!spawned)
+  //{
+    spawned = true;
+    std::cout << "Enemy spawned on a tile" << std::endl;
+    return 3;
+  //}
+  //return -1;
 }
 
 int Enemy::getHealth() 
