@@ -18,7 +18,19 @@ void EnemyFlying::Attack(int enemy)
   }
 	
 }
-void EnemyFlying::Fly() 
+void EnemyFlying::Move(int enemy) 
 {
-	std::cout << "EnemyFlying soars through the skies." << std::endl;
+  switch (enemy)
+  {
+	  case BAT:
+	{
+	  std::cout << "Bat flutters its wings and flies." << std::endl;
+	  break;
+    }
+	default:
+	{
+	  std::cout << "Unknown flying enemy flies!" << std::endl;
+	  break;
+    }
+  }
 }

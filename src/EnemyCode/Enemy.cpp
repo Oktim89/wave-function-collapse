@@ -7,10 +7,7 @@ Enemy::~Enemy() {}
 
 void Enemy::takeDamage(int amount)
 {
-  // health -= amount;
-  // if (health < 0) health = 0;
-  // std::cout << "Enemy took " << amount << " damage, remaining health: " <<
-  // health << std::endl;
+  // Apply damage to specific enemy
 
   // If enemy dies, remove from enemies_in_play
   for (int i = 0; i < enemies_in_play.size(); i++)
@@ -68,33 +65,33 @@ void Enemy::move()
 	}
 	else
 	{
-		enemyFlying.Fly();
+		enemyFlying.Move(BAT);
     }
 }
 
-int Enemy::getHealth()
+int Enemy::getHealth(int enemy)
 {
   // if type number is odd, it's a ground enemy
 
-  if (type == SLIME || type == SKELETON)
+  if (enemy == SLIME || enemy == SKELETON)
   {
-    return enemyGround.getHealth(type);
+    return enemyGround.getHealth(enemy);
     std::cout << "Ground enemy health retrieved." << std::endl;
   }
-  else if (type == BAT)
+  else if (enemy == BAT)
   {
     // return enemyFlying.getHealth(type);
     return 50; // Placeholder health for flying enemies
   }
 }
 
-int Enemy::getDamage()
+int Enemy::getDamage(int enemy)
 {
-  if (type == SLIME || type == SKELETON)
+  if (enemy == SLIME || enemy == SKELETON)
   {
-    return enemyGround.getDamage(type);
+    return enemyGround.getDamage(enemy);
   }
-  else if (type == BAT)
+  else if (enemy == BAT)
   {
     return 15; // Placeholder damage for flying enemies
   }
@@ -109,7 +106,9 @@ sf::Vector3i Enemy::spawn(int (*matrix)[60],int type)
     x = rand() % 60;
     y = rand() % 60;
   } while (matrix[x][y] != 0);
-  enemies_in_play.push_back({ type, getHealth(), getDamage(), x, y });
+  int health = getHealth(type);
+  int damage = getDamage(type);
+  enemies_in_play.push_back({ type,health,damage, x, y });
   return sf::Vector3i(type, x, y);
 }
 

@@ -9,7 +9,7 @@ class EnemyFlying
 		EnemyFlying();
 		~EnemyFlying();
 		void Attack(int enemy);
-		void Fly();
+		void Move(int enemy);
 
        private:
 		int health;

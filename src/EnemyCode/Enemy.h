@@ -20,8 +20,8 @@ class Enemy
 	void takeDamage(int amount); 
     sf::Vector3i spawn(int (*matrix)[60], int type);
     void printEnemiesInPlay();
-    int getHealth();
-    int getDamage();
+    int getHealth(int enemy);
+    int getDamage(int enemy);
 
 	private:
     int type;
