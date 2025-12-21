@@ -10,6 +10,8 @@ class EnemyFlying
 		~EnemyFlying();
 		void Attack(int enemy);
 		void Move(int enemy);
+        int getHealth(int enemy);
+        int getDamage(int enemy);
 
        private:
 		int health;
@@ -17,5 +19,7 @@ class EnemyFlying
         enum EnemyFlyingTypes
         {
 		  BAT = -2,
+          BABY_DRAGON = -4,
+		  
 		};
 };

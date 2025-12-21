@@ -31,6 +31,9 @@ class Enemy
       SLIME = -1, 
       BAT = -2,
       SKELETON = -3,
+      BABY_DRAGON = -4,
+      SPIDER      = -5,
+      WOLF        = -6,
     };
     struct EnemyIndividualStats
     {

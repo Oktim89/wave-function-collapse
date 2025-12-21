@@ -13,6 +13,21 @@ void EnemyGround::Attack(int enemy)
       std::cout << "Slime attacks with a sticky slap!" << std::endl;
       break;
     }
+    case SKELETON:
+    {
+      std::cout << "Skeleton swings its rusty sword!" << std::endl;
+      break;
+    }
+    case SPIDER:
+    {
+      std::cout << "Spider bites viciously!" << std::endl;
+      break;
+    }
+    case WOLF:
+    {
+      std::cout << "Wolf lunges with sharp fangs!" << std::endl;
+      break;
+    }
     default:
     {
       std::cout << "Unknown ground enemy attacks!" << std::endl;
@@ -28,6 +43,21 @@ void EnemyGround::Move(int enemy)
     case SLIME:
     {
       std::cout << "Slime oozes forward slowly." << std::endl;
+      break;
+    }
+    case SKELETON:
+    {
+      std::cout << "Skeleton clatters as it moves." << std::endl;
+      break;
+    }
+    case SPIDER:
+    {
+      std::cout << "Spider scurries quickly." << std::endl;
+      break;
+    }
+    case WOLF:
+    {
+      std::cout << "Wolf prowls stealthily." << std::endl;
       break;
     }
     default:
@@ -52,6 +82,16 @@ int EnemyGround::getDamage(int enemy)
       damage = 10;
       break;
     }
+    case SPIDER:
+    {
+      damage = 8;
+      break;
+    }
+    case WOLF:
+    {
+      damage = 12;
+      break;
+    }
     default:
     {
       damage = 0;
@@ -72,6 +112,16 @@ int EnemyGround::getHealth(int enemy)
     case SKELETON:
     {
       health = 20;
+      break;
+    }
+    case SPIDER:
+    {
+      health = 15;
+      break;
+    }
+    case WOLF:
+    {
+      health = 25;
       break;
     }
     default:

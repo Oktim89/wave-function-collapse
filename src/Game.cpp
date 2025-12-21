@@ -95,7 +95,7 @@ void Game::spawnEnemy(int amount)
   for (int i = 0; i < amount; i++)
   {
     int(*gridCopy)[60] = grid.getAllGrid();
-    int type            = ((rand()%3)+1)*-1; //Temp Number, change to be the enemy you want to spawn
+    int type            = ((rand()%6)+1)*-1; //Temp Number, change to be the enemy you want to spawn
     sf::Vector3i result = enemy.spawn(gridCopy,type); 
     grid.setGrid(result.y, result.z, result.x);
   }

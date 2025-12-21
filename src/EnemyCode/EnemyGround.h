@@ -19,5 +19,7 @@ class EnemyGround
 	 {
 	   SLIME = -1,
        SKELETON = -3,
+       SPIDER   = -5,
+       WOLF     = -6,
 	 };
 };

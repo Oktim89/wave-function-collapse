@@ -71,29 +71,26 @@ void Enemy::move()
 
 int Enemy::getHealth(int enemy)
 {
-  // if type number is odd, it's a ground enemy
-
-  if (enemy == SLIME || enemy == SKELETON)
+  if (enemy == BAT || enemy == BABY_DRAGON)
+  {
+    return enemyFlying.getHealth(enemy);
+    //std::cout << "Ground enemy health retrieved." << std::endl;
+  }
+  else 
   {
     return enemyGround.getHealth(enemy);
-    std::cout << "Ground enemy health retrieved." << std::endl;
-  }
-  else if (enemy == BAT)
-  {
-    // return enemyFlying.getHealth(type);
-    return 50; // Placeholder health for flying enemies
   }
 }
 
 int Enemy::getDamage(int enemy)
 {
-  if (enemy == SLIME || enemy == SKELETON)
+  if (enemy == BAT || enemy == BABY_DRAGON)
+  {
+    return enemyFlying.getDamage(enemy);
+  }
+  else
   {
     return enemyGround.getDamage(enemy);
-  }
-  else if (enemy == BAT)
-  {
-    return 15; // Placeholder damage for flying enemies
   }
 }
 
