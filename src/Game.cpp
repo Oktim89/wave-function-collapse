@@ -16,7 +16,7 @@ bool Game::init()
   grid.generateDungeon();
   spawnEnemy(5);
   grid.printGrid();
-  enemy.checkIfAttackPossible(grid.getAllGrid());
+  enemy.printEnemiesInPlay();
   return true;
 }
 
@@ -95,10 +95,8 @@ void Game::spawnEnemy(int amount)
   for (int i = 0; i < amount; i++)
   {
     int(*gridCopy)[60] = grid.getAllGrid();
-    sf::Vector3i result = enemy.spawn(gridCopy); 
-    std::cout << "Enemy spawned at X: " << result.y << " Y: " << result.z
-              << " With Type:" << result.x <<
-      std::endl;
+    int type            = ((rand()%3)+1)*-1; //Temp Number, change to be the enemy you want to spawn
+    sf::Vector3i result = enemy.spawn(gridCopy,type); 
     grid.setGrid(result.y, result.z, result.x);
   }
 }

@@ -1,6 +1,7 @@
 #pragma once
 #include <SFML/Graphics.hpp>
 #include <iostream>
+#include <vector>
 #include "EnemyGround.h"
 #include "EnemyFlying.h"
 
@@ -15,19 +16,32 @@ class Enemy
 	~Enemy();
 	void attack(int enemy);
     void checkIfAttackPossible(int (*matrix)[60]);
+    void move();
 	void takeDamage(int amount); 
-    sf::Vector3i spawn(int (*matrix)[60]);
+    sf::Vector3i spawn(int (*matrix)[60], int type);
+    void printEnemiesInPlay();
+    int getHealth();
+    int getDamage();
 
 	private:
-	//int health;
-    //int damage;
     int type;
     bool spawned = false;
     enum EnemyTypes
     {
-      SLIME = -1
+      SLIME = -1, 
+      BAT = -2,
+      SKELETON = -3,
     };
-
+    struct EnemyIndividualStats
+    {
+      int type;
+      int health;
+      int damage;
+      int x;
+      int y;
+    };
+    EnemyIndividualStats stats;
+    std::vector<EnemyIndividualStats> enemies_in_play;
 	EnemyGround enemyGround;
     EnemyFlying enemyFlying;
 

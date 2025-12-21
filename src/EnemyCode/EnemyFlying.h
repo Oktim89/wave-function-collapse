@@ -8,8 +8,14 @@ class EnemyFlying
 	public:
 		EnemyFlying();
 		~EnemyFlying();
-		void Attack();
+		void Attack(int enemy);
 		void Fly();
 
        private:
+		int health;
+        int damage;
+        enum EnemyFlyingTypes
+        {
+		  BAT = -2,
+		};
 };

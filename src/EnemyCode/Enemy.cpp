@@ -7,9 +7,19 @@ Enemy::~Enemy() {}
 
 void Enemy::takeDamage(int amount)
 {
-	//health -= amount;
-	//if (health < 0) health = 0;
-	//std::cout << "Enemy took " << amount << " damage, remaining health: " << health << std::endl;
+  // health -= amount;
+  // if (health < 0) health = 0;
+  // std::cout << "Enemy took " << amount << " damage, remaining health: " <<
+  // health << std::endl;
+
+  // If enemy dies, remove from enemies_in_play
+  for (int i = 0; i < enemies_in_play.size(); i++)
+  {
+    if (enemies_in_play[i].health <= 0)
+    {
+      enemies_in_play.erase(enemies_in_play.begin() + i);
+    }
+  }
 }
 
 void Enemy::checkIfAttackPossible(int (*matrix)[60])
@@ -17,34 +27,81 @@ void Enemy::checkIfAttackPossible(int (*matrix)[60])
 	// Placeholder logic for checking if an attack is possible
 	// In a real implementation, this would involve checking the player's position relative to the enemy
 	// For now, this function checks if there is a tile in the matrix that is an enemy
-  std::cout << "Checking if attack is possible based on the matrix." << std::endl;
-  for (int i = 0; i < 60; i++)
-  {
-    for (int j = 0; j < 60; j++)
+  //std::cout << "Checking if attack is possible based on the matrix." << std::endl;
+    for (int i = 0; i < enemies_in_play.size(); i++)
     {
-      if (matrix[i][j] == SLIME)
-      {
-        attack(SLIME);
-	  }
+      attack(enemies_in_play[i].type);
 	}
-  }
 }
 
 void Enemy::attack(int enemy) 
 {
-  if (type == SLIME)
+  switch (enemy)
   {
-	enemyGround.Attack(SLIME);
-  }
-  else
-  {
-	enemyFlying.Attack();
+    case SLIME:
+    {
+      enemyGround.Attack(SLIME);
+      break;
+    }
+    case BAT:
+    {
+      enemyFlying.Attack(BAT);
+      break;
+    }
+    default:
+    {
+      std::cout << "Unknown enemy type cannot attack!" << std::endl;
+      break;
+    }
   }
 }
 
-sf::Vector3i Enemy::spawn(int (*matrix)[60])
+void Enemy::move()
 {
-  //int(*matrix)[60] = matrix;
+	// Placeholder logic for enemy movement
+	// In a real implementation, this would involve pathfinding and movement towards the player
+	std::cout << "Enemy is moving towards the player." << std::endl;
+
+	if (type == SLIME)
+	{
+		enemyGround.Move(SLIME);
+	}
+	else
+	{
+		enemyFlying.Fly();
+    }
+}
+
+int Enemy::getHealth()
+{
+  // if type number is odd, it's a ground enemy
+
+  if (type == SLIME || type == SKELETON)
+  {
+    return enemyGround.getHealth(type);
+    std::cout << "Ground enemy health retrieved." << std::endl;
+  }
+  else if (type == BAT)
+  {
+    // return enemyFlying.getHealth(type);
+    return 50; // Placeholder health for flying enemies
+  }
+}
+
+int Enemy::getDamage()
+{
+  if (type == SLIME || type == SKELETON)
+  {
+    return enemyGround.getDamage(type);
+  }
+  else if (type == BAT)
+  {
+    return 15; // Placeholder damage for flying enemies
+  }
+}
+
+sf::Vector3i Enemy::spawn(int (*matrix)[60],int type)
+{
   int x  = 0;
   int y = 0;
   do
@@ -52,8 +109,21 @@ sf::Vector3i Enemy::spawn(int (*matrix)[60])
     x = rand() % 60;
     y = rand() % 60;
   } while (matrix[x][y] != 0);
-  spawned = true;
-  std::cout << "Enemy spawned on a tile" << std::endl;
-  type = -1; // Placeholder for enemy type
+  enemies_in_play.push_back({ type, getHealth(), getDamage(), x, y });
   return sf::Vector3i(type, x, y);
 }
+
+void Enemy::printEnemiesInPlay() 
+{
+  for (int i = 0; i < enemies_in_play.size(); i++)
+  {
+    std::cout << "----------------------\n"
+              << "Type: " << enemies_in_play[i].type << std::endl
+              << "Health: " << enemies_in_play[i].health << std::endl
+              << "Damage: " << enemies_in_play[i].damage << std::endl
+              << "X: " << enemies_in_play[i].x << std::endl
+              << "Y: " << enemies_in_play[i].y << std::endl
+              << "----------------------\n";
+  }
+}
+
