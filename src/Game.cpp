@@ -46,6 +46,7 @@ void Game::update(float dt)
 
 void Game::render()
 {
+  grid.drawDungeon(window);
   
 }
 

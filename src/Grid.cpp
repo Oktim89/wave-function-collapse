@@ -155,6 +155,73 @@ void Grid::connectRooms(const sf::IntRect& a, const sf::IntRect& b, int width)
   }
 }
 
+void Grid::drawDungeon(sf::RenderWindow& window)
+{
+
+    for (int i = 0; i < X - 1; i++)
+  {
+      for (int j = 0; j < Y - 1; j++)
+      {
+      if (grid[i][j] == RoomIndex::Wall)
+      {
+        // Draw wall tile at (i, j)
+        sf::RectangleShape wallTile(sf::Vector2f(CELL_SIZE, CELL_SIZE));
+        wallTile.setFillColor(sf::Color::Green);
+        wallTile.setPosition(i * CELL_SIZE, j * CELL_SIZE);
+        window.draw(wallTile);
+      }
+      else if (grid[i][j] == RoomIndex::BossRoom)
+      {
+        sf::RectangleShape bossTile(sf::Vector2f(CELL_SIZE, CELL_SIZE));
+        bossTile.setFillColor(sf::Color::Red);
+        bossTile.setPosition(i * CELL_SIZE, j * CELL_SIZE);
+        window.draw(bossTile);
+      
+      }
+      else if (grid[i][j] == RoomIndex::CombatRoom)
+      {
+        sf::RectangleShape combatTile(sf::Vector2f(CELL_SIZE, CELL_SIZE));
+        combatTile.setFillColor(sf::Color::Yellow);
+        combatTile.setPosition(i * CELL_SIZE, j * CELL_SIZE);
+        window.draw(combatTile);
+      
+      }
+      else if (grid[i][j] == RoomIndex::StartRoom)
+      {
+        sf::RectangleShape startTile(sf::Vector2f(CELL_SIZE, CELL_SIZE));
+        startTile.setFillColor(sf::Color::Magenta);
+        startTile.setPosition(i * CELL_SIZE, j * CELL_SIZE);
+        window.draw(startTile);
+      }
+      else if (grid[i][j] == RoomIndex::ShopRoom)
+      {
+        sf::RectangleShape startTile(sf::Vector2f(CELL_SIZE, CELL_SIZE));
+        startTile.setFillColor(sf::Color::Cyan);
+        startTile.setPosition(i * CELL_SIZE, j * CELL_SIZE);
+        window.draw(startTile);
+      }
+      else if (grid[i][j] == RoomIndex::TreasureRoom)
+      {
+        sf::RectangleShape startTile(sf::Vector2f(CELL_SIZE, CELL_SIZE));
+        startTile.setFillColor(sf::Color::Black);
+        startTile.setPosition(i * CELL_SIZE, j * CELL_SIZE);
+        window.draw(startTile);
+      }
+      else
+      {
+        // Draw floor tile at (i, j)
+        sf::RectangleShape floorTile(sf::Vector2f(CELL_SIZE, CELL_SIZE));
+        floorTile.setFillColor(sf::Color::Blue);
+        floorTile.setPosition(i * CELL_SIZE, j * CELL_SIZE);
+        window.draw(floorTile);
+      }
+
+      }
+    }
+
+
+}
+
 
 void Grid::generateDungeon()
 {

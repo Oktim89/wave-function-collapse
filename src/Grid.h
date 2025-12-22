@@ -41,13 +41,14 @@ class Grid
   bool inBounds(int x, int y);
   int tileForRoom(RoomType type);
   void connectRooms(const sf::IntRect& a, const sf::IntRect& b, int width);
+  void drawDungeon(sf::RenderWindow& window);
   void generateDungeon();
   void printGrid();
   void fillRoom(RoomType type, sf::IntRect rect);
  int MAXROOMS = 50;
   int roomCount = 0;
  int MAX_ROOM_SIZE = 20;
-  int MIN_ROOM_SIZE = 3;
+  int MIN_ROOM_SIZE = 5;
  int CELL_SIZE     = 10;
 
   float X_value = 0;
@@ -59,6 +60,7 @@ class Grid
   std::vector<RoomType> roomPlan = {
 	RoomType::Start,
 	RoomType::Combat,
+                                     RoomType::Combat,   RoomType::Combat,
 	RoomType::Treasure,
 	RoomType::Shop,
 	RoomType::Boss };
