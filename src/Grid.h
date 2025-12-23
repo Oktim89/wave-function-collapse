@@ -33,6 +33,7 @@ class Grid
   bool init();
   void update(float dt);
   void render();
+  sf::Vector2f getStartPosition();
   sf::IntRect generateRoom(RoomType type);
   int sizeBonus(RoomType type);
   bool placeRoom(sf::IntRect& newRoom);
@@ -64,6 +65,8 @@ class Grid
 	RoomType::Treasure,
 	RoomType::Shop,
 	RoomType::Boss };
+  bool start                     = true;
+  sf::Vector2f startpos;
   
 
 private:

@@ -191,6 +191,11 @@ void Grid::drawDungeon(sf::RenderWindow& window)
         sf::RectangleShape startTile(sf::Vector2f(CELL_SIZE, CELL_SIZE));
         startTile.setFillColor(sf::Color::Magenta);
         startTile.setPosition(i * CELL_SIZE, j * CELL_SIZE);
+        if (start)
+        {
+          startpos = startTile.getPosition();
+
+        }
         window.draw(startTile);
       }
       else if (grid[i][j] == RoomIndex::ShopRoom)
@@ -221,7 +226,6 @@ void Grid::drawDungeon(sf::RenderWindow& window)
 
 
 }
-
 
 void Grid::generateDungeon()
 {
@@ -328,4 +332,8 @@ void Grid::fillRoom(RoomType type , sf::IntRect rect) {
 
 }
 
+sf::Vector2f Grid::getStartPosition()
+{
 
+  return startpos;
+}

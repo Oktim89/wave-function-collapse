@@ -27,6 +27,9 @@ enum GAME_STATE
  private:
   bool collisionCheck(sf::Vector2i click, sf::Sprite& sprite);
   void spawn();
+  sf::RectangleShape player;
+  float speed = 200;
+  sf::View camera;
 
 
   GAME_STATE game_state = MENU;

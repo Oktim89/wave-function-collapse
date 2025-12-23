@@ -14,41 +14,39 @@ bool Game::init()
 {
   grid.init();
   grid.generateDungeon();
+  sf::RectangleShape player(sf::Vector2f(20.f, 20.f));
+  player.setFillColor(sf::Color::Magenta);
+  player.setPosition(grid.getStartPosition());
+  
+  sf::View camera(sf::FloatRect(0.f, 0.f, 30.f, 30.f));
+  camera.setCenter(player.getPosition());
+  window.setView(camera);
   return true;
+  
 }
 
 // UPDATE FUNCTION
 void Game::update(float dt)
 {
-  switch (game_state)
-  {
-    case MENU:
-    {
-    
-    
-    }
-      break;
-    case GAME:
-        {
-     
-     
-    }
-        break;
-    case PAUSE:
-    {
-    
-    }
-    break;
-  }
+  
+
+  // Update camera to follow player
+  camera.setCenter(player.getPosition());
+  
  
   
 }
 
 void Game::render()
 {
+  window.draw(player);
+  window.setView(camera);
   grid.drawDungeon(window);
   
+  
 }
+
+
 
 void Game::mouseClicked(sf::Event event)
 {
@@ -62,6 +60,27 @@ void Game::mouseClicked(sf::Event event)
 
 void Game::keyPressed(sf::Event event)
 {
+  if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
+  {
+    player.move(0.f, -speed * 0.16);
+  
+  }
+    
+  if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
+  {
+    player.move(0.f, speed * 0.16);
+  }
+    
+  if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
+  {
+    player.move(-speed * 0.16, 0.f);
+  }
+    
+  if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+  {
+    player.move(speed *0.16, 0.f);
+  }
+ 
  
 }
 
