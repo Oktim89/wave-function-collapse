@@ -3,6 +3,7 @@
 
 #include <SFML/Graphics.hpp>
 #include "Grid.h"
+#include "WFC.h"
 
 enum GAME_STATE
 {
@@ -31,7 +32,7 @@ enum GAME_STATE
 
   GAME_STATE game_state = MENU;
   Grid grid;
-  
+  WFC wfc;
   
   
  

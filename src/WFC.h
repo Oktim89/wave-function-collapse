@@ -2,11 +2,19 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
 #include <vector>
-struct Grid
+#include <map>
+#include <string>
+enum class TileType
+{
+  Blank,
+  Red,
+  Blue,
+  Green
+};
+struct Cell
 {
   bool collapsed = false;
-  int options[3] = { 0, 1, 2 };
-
+  std::vector<TileType> options;
 };
 class WFC
 {
@@ -14,10 +22,20 @@ class WFC
   WFC();
   ~WFC();
   bool init();
-  std::vector<Grid> grid;
+  void render(sf::RenderWindow& window);
+  int index(int x, int y);
+  sf::RectangleShape& getShape(TileType type);
+  int num_tiles = 3;
+  std::vector<Cell> grid;
+  std::vector<sf::RectangleShape> tiles;
   int DIM = 2;
   sf::RectangleShape red;
   sf::RectangleShape blue;
   sf::RectangleShape green;
-
+  sf::RectangleShape blank;
+  Cell cell;
 };
+
+
+
+

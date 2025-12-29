@@ -12,9 +12,10 @@ Game::~Game() {}
 
 bool Game::init()
 {
-  grid.init();
-  grid.generateDungeon();
+  
+  wfc.init();
   return true;
+
 }
 
 // UPDATE FUNCTION
@@ -46,7 +47,7 @@ void Game::update(float dt)
 
 void Game::render()
 {
-  
+  wfc.render(window);
 }
 
 void Game::mouseClicked(sf::Event event)
