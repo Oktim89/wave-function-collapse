@@ -2,7 +2,8 @@
 #define WHACKAMOLESFML_GAME_H
 
 #include <SFML/Graphics.hpp>
-#include "Grid.h"
+
+#include "WFC.h"
 
 enum GAME_STATE
 {
@@ -31,9 +32,8 @@ enum GAME_STATE
   float speed = 200;
   sf::View camera;
 
+  WFC wfc;
 
-  GAME_STATE game_state = MENU;
-  Grid grid;
   
   
   

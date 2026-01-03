@@ -12,15 +12,8 @@ Game::~Game() {}
 
 bool Game::init()
 {
-  grid.init();
-  grid.generateDungeon();
-  sf::RectangleShape player(sf::Vector2f(20.f, 20.f));
-  player.setFillColor(sf::Color::Magenta);
-  player.setPosition(grid.getStartPosition());
-  
-  sf::View camera(sf::FloatRect(0.f, 0.f, 30.f, 30.f));
-  camera.setCenter(player.getPosition());
-  window.setView(camera);
+
+wfc.init();
   return true;
   
 }
@@ -28,10 +21,10 @@ bool Game::init()
 // UPDATE FUNCTION
 void Game::update(float dt)
 {
-  
+  wfc.update();
 
   // Update camera to follow player
-  camera.setCenter(player.getPosition());
+  
   
  
   
@@ -39,9 +32,7 @@ void Game::update(float dt)
 
 void Game::render()
 {
-  window.draw(player);
-  window.setView(camera);
-  grid.drawDungeon(window);
+  wfc.render(window);
   
   
 }
