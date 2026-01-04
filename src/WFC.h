@@ -8,7 +8,8 @@ enum class TileType
   Blank,
   Red,
   Blue,
-  Green
+  Green,
+  Black
 };
 struct Cell
 {
@@ -24,7 +25,7 @@ class WFC
   void scan();
   void collapse();
   void render(sf::RenderWindow& window);
-  void propogte();
+  void propagate(int chosenIndex);
   void update();
   int index(int x, int y);
   sf::RectangleShape& getShape(TileType type);
@@ -32,13 +33,14 @@ class WFC
   bool contains(const std::vector<TileType>& v, TileType value);
   void reset();
   std::vector<Cell> grid;
-  int DIM = 10;
+  int DIM =10;
   int random = 0;
   std::vector<int> possible_pos;
   sf::RectangleShape red;
   sf::RectangleShape blue;
   sf::RectangleShape green;
   sf::RectangleShape blank;
+  sf::RectangleShape black;
   float w                = 1080;
   float h                = 720;
 

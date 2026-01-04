@@ -14,12 +14,13 @@ bool WFC::init()
   blue.setSize(sf::Vector2f(50, 50));
   green.setSize(sf::Vector2f(50, 50));
   blank.setSize(sf::Vector2f(50, 50));
+  black.setSize(sf::Vector2f(50, 50));
 
   red.setFillColor(sf::Color::Red);
   blue.setFillColor(sf::Color::Blue);
   green.setFillColor(sf::Color::Green);
   blank.setFillColor(sf::Color::White);
-
+  black.setFillColor(sf::Color::Black);
  
 
   grid.resize(DIM * DIM);
@@ -27,126 +28,115 @@ bool WFC::init()
   {
     sell.collapsed = false;
     sell.options   = {
-      TileType::Blank, TileType::Red, TileType::Blue, TileType::Green
+      TileType::Red, TileType::Blue, TileType::Green
     };
   }
+  
+  
+
 
   w = w / DIM;
   h = h / DIM;
 
   return true;
 }
+
 void WFC::scan()
 {
-  lowest_e           = INT_MAX;
-  lowestEntropyIndex = -1;
+  lowest_e = INT_MAX;
   possible_pos.clear();
 
-  for (int i = 0; i < DIM; i++)
+  for (int i = 0; i < DIM * DIM; i++)
   {
-       for (int j = 0; j < DIM; j++)
+    Cell& cell = grid[i];
+    if (cell.collapsed)
+      continue;
+
+    int entropy = cell.options.size();
+    if (entropy < lowest_e)
     {
-      
-      Cell& current_cell = grid[index(i, j)];
-      if (current_cell.collapsed)
-      {
-        
-        continue;
-      }
-      else
-      {
-        possible_pos.push_back(index(i, j));
-      }
-      int entropy = current_cell.options.size();
-      if (entropy < lowest_e)
-      {
-        lowest_e           = entropy;
-        lowestEntropyIndex = index(i, j);
-        
-      }
+      lowest_e = entropy;
+      possible_pos.clear();
+      possible_pos.push_back(i);
     }
-    
+    else if (entropy == lowest_e)
+    {
+      possible_pos.push_back(i);
+    }
   }
 }
+
 void WFC::collapse()
 {
-  if (lowestEntropyIndex == -1)
+  if (possible_pos.empty())
   {
-    // reset()
+    finished = true;
+    return;
   }
-  random = possible_pos[rand() % possible_pos.size()];
-  
-  Cell& cell      = grid[random];
-  TileType chosen = cell.options[(rand() % cell.options.size())];
-  //for (int i = 0; i < sizeof(dx) / sizeof(dx[0]); i++)
-  //{
-  //  int x  = dx[i];
-  //  int y  = dy[i];
-  //  int in = random+ index(x, y);
-  //  if (in < 0 || in >= DIM * DIM)
-  //  {
-  //    continue;
-  //  }
-  //  Cell& neighbour = grid[in];
-  //  if (contains(neighbour.options, chosen)){
-  //    srand(time(NULL));
-  //    if (cell.options.size() > 1)
-  //    {
-  //      removeElement(cell.options, chosen);
-  //    }
-  //    chosen = cell.options[rand() % cell.options.size()];
-  //  }
 
-  //}
-  
-  
-  
-    cell.options.clear();
-    cell.options.push_back(chosen);
-    cell.collapsed = true;
-  
+  int chosenIndex = possible_pos[rand() % possible_pos.size()];
+  Cell& cell      = grid[chosenIndex];
+
+  TileType chosen = cell.options[rand() % cell.options.size()];
+  cell.options    = { chosen };
+  cell.collapsed  = true;
+
+  propagate(chosenIndex);
 }
 
-void WFC::propogte()
+
+void WFC::propagate(int startIndex)
 {
   std::vector<int> queue;
-  queue.push_back(random);
-  if (!queue.empty())
+  queue.push_back(startIndex);
+
+  while (!queue.empty())
   {
-    int q = queue.front();
-    queue.erase(queue.begin());
-    Cell& current_cell = grid[q];
-    TileType forbidden = current_cell.options.front();
-    for (int i = 0; i < sizeof(dx) / sizeof(dx[0]); i++)
+    int q = queue.back();
+    queue.pop_back();
+
+    int cx = q % DIM;
+    int cy = q / DIM;
+
+    TileType forbidden = grid[q].options[0];
+
+    for (int d = 0; d < 4; d++)
     {
-      int x  = dx[i];
-      int y  = dy[i];
-      int in = q + index(x, y);
-      if (in < 0 || in >= DIM * DIM)
-      {
+      int nx = cx + dx[d];
+      int ny = cy + dy[d];
+
+      if (nx < 0 || ny < 0 || nx >= DIM || ny >= DIM)
         continue;
-      }
-      Cell& neigbour = grid[in];
-      int n_size     = neigbour.options.size();
-      if (neigbour.options.size() > 1)
+
+      int ni          = index(nx, ny);
+      Cell& neighbour = grid[ni];
+
+      if (neighbour.collapsed)
+        continue;
+
+      int before = neighbour.options.size();
+      removeElement(neighbour.options, forbidden);
+
+      if (neighbour.options.empty())
       {
-        removeElement(neigbour.options, forbidden);
+        reset();
+        return;
       }
 
-      if (neigbour.options.size() == 1)
+      if (neighbour.options.size() < before)
       {
-        queue.push_back(in);
-        neigbour.collapsed = true;
-        if (neigbour.options.front() == current_cell.options.front())
-        {
-          reset();
-          std::cout << "Reset called \n";
-        }
+        queue.push_back(ni);
       }
 
+      if (neighbour.options.size() == 1)
+      {
+        neighbour.collapsed = true;
+        queue.push_back(ni);
+      }
     }
   }
 }
+
 void WFC::update()
 {
   
@@ -154,32 +144,18 @@ void WFC::update()
   {
     scan();
     collapse();
-    propogte();
-    for (int i = 0; i < DIM; i++)
-    {
-      for (int j = 0; j < DIM; j++)
-      {
-        int in             = index(j, i);
-        Cell& current_cell = grid[index(i, j)];
-        if (current_cell.collapsed)
-        {
-          finished = true;
-          continue;
-        }
-        else
-        {
-          finished = false;
-          break;
-        }
-      }
-      if (!finished)
-      {
 
+    finished = true;
+    for (Cell& cell : grid)
+    {
+      if (!cell.collapsed)
+      {
+        finished = false;
+        break;
       }
     }
   }
-
-
+ 
 }
 
 void WFC::render(sf::RenderWindow& window)
@@ -232,6 +208,10 @@ sf::RectangleShape& WFC::getShape(TileType type)
     {
       return blank;
     }
+    case TileType::Black:
+    {
+      return black;
+    }
     break;
     default:
       return blank;
@@ -247,10 +227,11 @@ void WFC::reset() {
   {
     sell.collapsed = false;
     sell.options   = {
-      TileType::Blank, TileType::Red, TileType::Blue, TileType::Green
+       TileType::Red, TileType::Blue, TileType::Green
     };
   }
   possible_pos.clear();
+
 
 }
 

@@ -35,6 +35,7 @@ enum GAME_STATE
 
   WFC wfc;
   WFCinit i_wfc;
+  float timer = 0;
 
   
   

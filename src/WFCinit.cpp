@@ -89,7 +89,7 @@ void WFCinit::collapse()
 
   //}
 
-  cell.options.clear();
+ cell.options.clear();
   cell.options.push_back(chosen);
   cell.collapsed = true;
 }

@@ -22,10 +22,16 @@ wfc.init();
 // UPDATE FUNCTION
 void Game::update(float dt)
 {
-  //wfc.update();
-  i_wfc.update();
+  timer += dt;
+  if (timer >= 0.1f)
+  {
+    wfc.update();
+    timer = 0;
+  }
+  
+  //i_wfc.update();
 
-  // Update camera to follow player
+  
   
   
  
@@ -34,8 +40,8 @@ void Game::update(float dt)
 
 void Game::render()
 {
-  //wfc.render(window);
-  i_wfc.render(window);
+  wfc.render(window);
+  //i_wfc.render(window);
   
   
 }
