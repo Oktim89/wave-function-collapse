@@ -1,46 +1,45 @@
 #pragma once
 #include <SFML/Graphics.hpp>
+#include <algorithm>
 #include <iostream>
 #include <vector>
-#include <algorithm>
-enum class TileType
+enum class Tile
 {
   Blank,
   Red,
   Blue,
   Green
 };
-struct Cell
+struct Cel_l
 {
   bool collapsed = false;
-  std::vector<TileType> options;
+  std::vector<Tile> options;
 };
-class WFC
+class WFCinit
 {
  public:
-  WFC();
-  ~WFC();
+  WFCinit();
+  ~WFCinit();
   bool init();
   void scan();
   void collapse();
   void render(sf::RenderWindow& window);
   void propogte();
   void update();
-  int index(int x, int y);
-  sf::RectangleShape& getShape(TileType type);
-  void removeElement(std::vector<TileType>& vec, TileType value);
-  bool contains(const std::vector<TileType>& v, TileType value);
   void reset();
-  std::vector<Cell> grid;
-  int DIM = 10;
+  int index(int x, int y);
+  sf::RectangleShape& getShape(Tile type);
+  void removeElement(std::vector<Tile>& vec, Tile value);
+  bool contains(const std::vector<Tile>& v, Tile value);
+  std::vector<Cel_l> grid;
+  int DIM    = 10;
   int random = 0;
-  std::vector<int> possible_pos;
   sf::RectangleShape red;
   sf::RectangleShape blue;
   sf::RectangleShape green;
   sf::RectangleShape blank;
-  float w                = 1080;
-  float h                = 720;
+  float w = 1080;
+  float h = 720;
 
   int lowest_e           = 0;
   int lowestEntropyIndex = 0;

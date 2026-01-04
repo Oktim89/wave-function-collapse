@@ -14,6 +14,7 @@ bool Game::init()
 {
 
 wfc.init();
+  i_wfc.init();
   return true;
   
 }
@@ -21,7 +22,8 @@ wfc.init();
 // UPDATE FUNCTION
 void Game::update(float dt)
 {
-  wfc.update();
+  //wfc.update();
+  i_wfc.update();
 
   // Update camera to follow player
   
@@ -32,7 +34,8 @@ void Game::update(float dt)
 
 void Game::render()
 {
-  wfc.render(window);
+  //wfc.render(window);
+  i_wfc.render(window);
   
   
 }

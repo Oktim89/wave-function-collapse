@@ -4,6 +4,7 @@
 #include <SFML/Graphics.hpp>
 
 #include "WFC.h"
+#include "WFCinit.h"
 
 enum GAME_STATE
 {
@@ -33,6 +34,7 @@ enum GAME_STATE
   sf::View camera;
 
   WFC wfc;
+  WFCinit i_wfc;
 
   
   
